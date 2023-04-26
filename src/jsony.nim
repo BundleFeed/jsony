@@ -781,8 +781,10 @@ proc dumpHook*(s: var string, v: string) =
       s.dumpStrFast(v)
 
 template dumpKey(s: var string, v: string) =
-  const v2 = v.toJson() & ":"
-  s.add v2
+  var escaped = newStringOfCap(v.len + 5)
+  dumpHook(escaped, v)
+  escaped.add ":"
+  s.add escaped
 
 proc dumpHook*(s: var string, v: char) =
   s.add '"'
